@@ -1,26 +1,38 @@
-import java.util.*;
-
 class make{
-    public static int convert(int n){   
-        int decimal=0;
-        int i=0;
 
-        while(n !=0 ){
-            int digit=n % 10;
-
-            decimal += digit * (int) Math.pow(2, i++);
-            n = n/10;
-        }
-        return decimal;
+    public static void swap(int[] arr, int s, int e){
+        int temp=arr[s];
+        arr[s++]=arr[e];
+        arr[e--]=temp;
     }
-    public static void main(String args[]){
-        Scanner sc=new Scanner(System.in);
-        int n=sc.nextInt(); 
+    public static void sort(int[] arr){
+        int l=0; 
+        int m=0;
+        int h=arr.length -1;
 
-        int result=convert(n);
+        while(m <= h){
+            if(arr[m] == 0){
+                swap(arr, m,l);
+                l++;
+                m++;
+            }
 
-        System.out.print(result);
+            else if(arr[m] == 1){
+                m++;
+            }else{
+                swap(arr, m, h);
+                h--;
+            }
+        }
+        for(int i=0; i<arr.length; i++){
+            System.out.print(arr[i]+" ");
+        }
+    }
+    public static void main(String agrs[]){
+        int[] arr={1,0,2,1,0,0,2,1,1,0};
 
+        sort(arr);
 
+        
     }
 }
