@@ -1,33 +1,23 @@
 import java.util.*;
 
 class make{
-    
-    public static int close(int[] arr, int x){
-        int start=0;
-        int end=arr.length-1;
+    public static void print(String str,String output,int index,char ch){
+       if(index >= str.length()){
+        System.out.print(output);
+        return;
+       }
 
-        int ans=-1;
-        while(start <= end){
-            int mid=start +(end-start)/2;
+       if(str.charAt(index) == ch){
+            output= String.valueOf(index);
+       }
 
-            if(arr[mid] >= x) {
-                ans=mid;
-                end=mid-1;
-            }
-            else if(x > arr[mid]){
-                start=mid+1;
-            }else{
-                end=mid-1;
-            }
-        }
-        return ans;
+       print(str, output, index+1,ch);
     }
-   
     public static void main(String args[]){
-        int[] arr={1,1,1,10,10,10};
-       
-        int x=9;
-        int result=close(arr, x);
-        System.out.print("at index="+result);
+        String str="abddbd";
+        char ch='d';
+        String output="";
+        
+        print(str, output, 0, ch);
     }
 }
