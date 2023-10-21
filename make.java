@@ -1,67 +1,124 @@
 import java.util.*;
+import java.lang.*;
 
-class make{
-    public static void divide(int[] arr, int start, int end){
-        int mid=start+(end-start)/2;
+class make {
 
-        int leftLength=mid-start+1;
-        int rightLength=end-mid;
+    public static boolean isSafe(int[][] maze, int srcx, int srcy, int newx, int newy, int row, int col,Boolean[][] visited) {
+        // path closed toh nahi means == 1
+        // out of bond
+        // mark visited
 
-        int leftArray[]=new int[leftLength];
-        int rightArray[]=new int[rightLength];
-
-        int k=start;
-
-        for(int i=0; i<leftLength; i++){
-            leftArray[i]=arr[k++];
+        if ((newx >= 0 && newx < row) &&
+                (newy >= 0 && newy < col) &&
+                maze[newx][newy] == 1 &&
+                visited[newx][newy] == false) 
+                {
+                return true;
+            } 
+             else {
+            return false;
         }
 
-        k=mid+1;
-
-        for(int i=0; i<rightLength; i++){
-            rightArray[i]=arr[k++];
-        }
-
-        int i=0; 
-        int j=0;
-        k=start;
-
-        while(i < leftLength && j < rightLength){
-            if(leftArray[i] <= rightArray[j]){
-                arr[k++]=leftArray[i++];
-            }else{
-                arr[k++]=rightArray[j++];
-            }
-        }
-
-        while(i < leftLength){
-            arr[k++]=leftArray[i++];
-        }
-        while(j < rightLength){
-            arr[k++]=rightArray[j++];
-        }
     }
-    public static void merge(int[] arr, int start, int end){
-        if(start >= end || start == end){
+
+    public static void printAllPath(int[][] maze,int row,int col,int srcx,int srcy,StringBuilder output,Boolean[][] visited){
+        
+        // base case jb destination reached kr lunga
+        // destination cordinates are row-1 and col -1
+        if(srcx == row-1 && srcy == col -1){
+            System.out.print(output);
+            System.out.println();
             return;
         }
 
-        int mid=start +(end-start)/2;
+        //up
+        int newx=srcx-1;
+        int newy=srcy;
+        if(isSafe(maze, srcx, srcy, newx, newy, row, col, visited)){
 
-        // left array calculate krna
-        merge(arr, start, mid);
-        // right array calculate krna
-        merge(arr, mid+1, end);
+            visited[newx][newy]=true;   
 
-        divide(arr, start, end);
-    }
-    public static void main(String args[]){
-        int[] arr={1,4,2,3,8,6,12,10,13,12,18,171,15,191,20};
+            output.append("u");
+            // call recursion
+            printAllPath(maze, row, col, newx, newy, output, visited);
 
-        merge(arr, 0, arr.length -1);
-        for(int i: arr){
-            System.out.print(i+" ");
+            // visited false using backtracing
+            output.deleteCharAt(output.length() -1);
+            visited[newx][newy]=false;
         }
 
+        //down
+        
+          newx=srcx+1;
+         newy=srcy;
+        if(isSafe(maze, srcx, srcy, newx, newy, row, col, visited)){
+
+            visited[newx][newy]=true;   
+
+            output.append("d");
+            // call recursion
+            printAllPath(maze, row, col, newx, newy, output, visited);
+
+            // visited false using backtracing
+            output.deleteCharAt(output.length() -1);
+            visited[newx][newy]=false;
+        }
+
+        //right
+         newx=srcx;
+         newy=srcy + 1;
+        if(isSafe(maze, srcx, srcy, newx, newy, row, col, visited)){
+
+            visited[newx][newy]=true;   
+
+            output.append("r");
+            // call recursion
+            printAllPath(maze, row, col, newx, newy, output, visited);
+
+            // visited false using backtracing
+            output.deleteCharAt(output.length() -1);
+            visited[newx][newy]=false;
+        }
+        // left
+
+         newx=srcx;
+         newy=srcy - 1;
+        if(isSafe(maze, srcx, srcy, newx, newy, row, col, visited)){
+
+            visited[newx][newy]=true;   
+
+            output.append("l");
+            // call recursion
+            printAllPath(maze, row, col, newx, newy, output, visited);
+
+            // visited false using backtracing
+            output.deleteCharAt(output.length() -1);
+            visited[newx][newy]=false;
+        }
+
+    }
+
+    public static void main(String args[]) {
+        int[][] maze = {
+                { 1, 0, 0, 0 },
+                { 1, 1, 0, 0 },
+                { 1, 1, 1, 0 },
+                { 1, 1, 1, 1 }
+        };
+
+        Boolean[][] visited = new Boolean[4][4];
+
+        for (int i = 0; i < visited.length; i++) {
+            for (int j = 0; j < visited[i].length; j++) {
+                visited[i][j] = false;
+            }
+        }
+        int srcx = 0;
+        int srcy = 0;
+        int row = 4;
+        int col = 4;
+        StringBuilder output = new StringBuilder();
+
+        printAllPath(maze, row, col, srcx, srcy, output, visited);
     }
 }
